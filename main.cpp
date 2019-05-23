@@ -18,7 +18,12 @@
  *      main function that attempts to access characters that are within and outside the bounds of a
  *      suitable initialized BCheckString object.
  *
- *
+ * ALGORITHM:
+ * 1. Create an object of the derived string class.
+ * 2. Set the target position to 0..
+ * 3. WHILE the user doesnt enter -1. Prompt the user for an index to check.
+ * 4. Call the overloaded function.
+ * 5. Catch the BoundsException when necessary.
  *
  */
 #include <iostream>
@@ -28,6 +33,7 @@ using namespace std;
 class BCheckString : public string
 {
 public:
+    // custom exception class
     class BoundsException {
     public:
         BoundsException() {
@@ -35,6 +41,7 @@ public:
         }
     };
 
+    //
     BCheckString(string s);
     ~BCheckString();
 
@@ -61,6 +68,8 @@ char BCheckString::operator[](int k) {
 
     string str = *this;
 
+    // check if k is within the bounds of the string, throw an
+    // exception if not
     if (k >= 0 && k < str.length()) {
         return str[k];
     } else {
@@ -73,22 +82,23 @@ int main() {
     // create an object
     BCheckString bcs("A string!");
 
+    // set pos to 0
     int pos = 0;
 
     do {
-
+        // get the index the user wishes to check
         cout << "Enter an index to check: ";
         cin >> pos;
 
+        // call the overloaded function
         try {
             cout << bcs.operator[](pos) << endl;
+        // catch the exception!
         } catch (BCheckString::BoundsException be) {
             cout << "A Bounds exception was thrown!" << endl;
         }
-
+    // do until user enters -1
     } while (pos != -1);
-
-
 
     return 0;
 }
